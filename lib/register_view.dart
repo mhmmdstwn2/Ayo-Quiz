@@ -1,22 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:ayo_quizz/controllers/registration_controller.dart';
 import 'package:ayo_quizz/theme.dart';
 import 'package:ayo_quizz/widgets/custom_checkbox.dart';
 import 'package:ayo_quizz/widgets/primary_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({ Key? key }) : super(key: key);
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final RegistrationController _registrationController = RegistrationController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
   bool passwordVisible = false;
   bool passwordConfirmVisible = false;
+
   void togglePassword() {
     setState(() {
       passwordVisible = !passwordVisible;
     });
+  }
+
+  Future<void> register() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+    String confirmPassword = _confirmPasswordController.text.trim();
+
+    if (email.isNotEmpty && password.isNotEmpty && password == confirmPassword) {
+      User? user = await _registrationController.registerWithEmailPassword(email, password);
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, '/home'); // atau ke halaman yang diinginkan setelah registrasi
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Registration failed. Please try again.")),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please ensure all fields are filled correctly.")),
+      );
+    }
   }
 
   @override
@@ -36,42 +65,40 @@ class _RegisterPageState extends State<RegisterPage> {
                     'APP Flutter\nRegister',
                     style: heading2.copyWith(color: textBlack),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Image.asset(
                     'assets/images/accent.png',
                     width: 99,
                     height: 4,
-                  )
+                  ),
                 ],
               ),
-              SizedBox(height: 48,),
+              SizedBox(height: 48),
               Form(
                 child: Column(
                   children: [
                     Container(
                       decoration: BoxDecoration(
                         color: textWhiteGrey,
-                        borderRadius: BorderRadius.circular(14)
+                        borderRadius: BorderRadius.circular(14),
                       ),
                       child: TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           hintText: 'Email',
                           hintStyle: heading6.copyWith(color: textGrey),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none
-                          )
+                          border: OutlineInputBorder(borderSide: BorderSide.none),
                         ),
                       ),
                     ),
-                    SizedBox(height: 32,),
+                    SizedBox(height: 32),
                     Container(
                       decoration: BoxDecoration(
                         color: textWhiteGrey,
-                        borderRadius: BorderRadius.circular(14)
+                        borderRadius: BorderRadius.circular(14),
                       ),
                       child: TextFormField(
+                        controller: _passwordController,
                         obscureText: !passwordVisible,
                         decoration: InputDecoration(
                           hintText: 'Password',
@@ -82,17 +109,18 @@ class _RegisterPageState extends State<RegisterPage> {
                             icon: Icon(passwordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined),
                             onPressed: togglePassword,
                           ),
-                          border: OutlineInputBorder(borderSide: BorderSide.none)
+                          border: OutlineInputBorder(borderSide: BorderSide.none),
                         ),
                       ),
                     ),
-                    SizedBox(height: 32,),
+                    SizedBox(height: 32),
                     Container(
                       decoration: BoxDecoration(
                         color: textWhiteGrey,
-                        borderRadius: BorderRadius.circular(14)
+                        borderRadius: BorderRadius.circular(14),
                       ),
                       child: TextFormField(
+                        controller: _confirmPasswordController,
                         obscureText: !passwordConfirmVisible,
                         decoration: InputDecoration(
                           hintText: 'Password Confirmation',
@@ -105,21 +133,21 @@ class _RegisterPageState extends State<RegisterPage> {
                               setState(() {
                                 passwordConfirmVisible = !passwordConfirmVisible;
                               });
-                            }, 
+                            },
                           ),
-                          border: OutlineInputBorder(borderSide: BorderSide.none)
+                          border: OutlineInputBorder(borderSide: BorderSide.none),
                         ),
                       ),
-                    )
+                    ),
                   ],
-                )
+                ),
               ),
-              SizedBox(height: 32,),
+              SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CustomCheckbox(),
-                  SizedBox(width: 12,),
+                  SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -130,18 +158,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       Text(
                         'Term & Condition',
                         style: regular16pt.copyWith(color: primaryBlue),
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
-              SizedBox(height: 32,),
+              SizedBox(height: 32),
               CustomPrimaryButton(
                 buttonColor: primaryBlue,
                 textValue: 'Register',
                 textColor: Colors.white,
+                onPressed: register,
               ),
-              SizedBox(height: 50,),
+              SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -157,12 +186,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       'Login',
                       style: regular16pt.copyWith(color: primaryBlue),
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
-        )
+        ),
       ),
     );
   }

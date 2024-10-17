@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Image.asset(
-          'assets/images/ss.png', // Path ke gambar splash screen
+          'assets/images/ss.png',
           height: 150,
         ),
       ),

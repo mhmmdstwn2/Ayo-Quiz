@@ -6,8 +6,13 @@ class CustomPrimaryButton extends StatelessWidget {
   final Color buttonColor;
   final String textValue;
   final Color textColor;
+  final VoidCallback? onPressed;
   
-  const CustomPrimaryButton({ this.buttonColor=Colors.black, this.textValue='', this.textColor=Colors.black });
+  const CustomPrimaryButton({
+     this.buttonColor=Colors.black, 
+     this.textValue='', this.textColor=Colors.black,
+      required this.onPressed,
+       });
 
   @override
   Widget build(BuildContext context) {

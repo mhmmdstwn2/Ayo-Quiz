@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1031270066749",
+    "project_id": "ayo-quizz",
+    "storage_bucket": "ayo-quizz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031270066749:android:d755f1abbe8a6eeefc5854",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrmAF91vOvUuNLVpAh6p9cKO6hw_W4a00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

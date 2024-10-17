@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'ss.dart'; // Import ss.dart sebagai splash screen utama
+import 'package:firebase_core/firebase_core.dart';
+import 'package:ayo_quizz/ss.dart';
+import 'package:ayo_quizz/homescreen/home_screen.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); 
   runApp(MyApp());
 }
 
@@ -9,12 +14,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ayco Quiz',
+      title: 'Ayo Quizz',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(), // Ganti home dengan SplashScreen dari ss.dart
+      home: SplashScreen(),
+      routes: {
+        '/home': (context) =>HomeScreen(), 
+      },
     );
   }
 }
